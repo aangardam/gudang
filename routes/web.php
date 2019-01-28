@@ -27,6 +27,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('Kategori/active/{id}','CategoryController@active');
 	Route::post('Kategori/inactive/{id}','CategoryController@inactive');
 	Route::resource('/User','UserController');
-
+	Route::resource('/Vendors','VendorsController');
 });
 

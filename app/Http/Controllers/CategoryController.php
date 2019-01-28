@@ -108,16 +108,24 @@ class CategoryController extends Controller
         Alert::success('Data berhasil dihapus', 'Selamat!');
         return redirect('/Kategori');
     }
+
     public function active(Request $request, $id)
     {
-        $this->category->delete($id);
-        Alert::success('Data berhasil dihapus', 'Selamat!');
+        Category::where('id',$id)->update(array(
+            'status' => 'Aktif'
+        ));
+        Alert::success('Data berhasil diubah', 'Selamat!');
         return redirect('/Kategori');
     }
     public function inactive(Request $request, $id)
     {
-        $this->category->delete($id);
-        Alert::success('Data berhasil dihapus', 'Selamat!');
+        // TODO : pengecekan PO terlebih dahulu (Jika akan ada PO) 
+        // TODO : Ketika tidak ada PO maka udah status
+        // TODO : Jika ada PO yg belum selesai tidak bisa ubah status
+        Category::where('id',$id)->update(array(
+            'status' => 'Tidak Aktif'
+        ));
+        Alert::success('Data berhasil diubah', 'Selamat!');
         return redirect('/Kategori');
     }
 }

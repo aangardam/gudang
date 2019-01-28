@@ -18,6 +18,9 @@
       <a class="app-menu__item" href="{{ url('Kategori')}}"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Kategori</span></a>
     </li>
     <li>
+      <a class="app-menu__item" href="{{ url('Vendors')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Vendors</span></a>
+    </li>
+    <li>
       <a class="app-menu__item" href="{{ url('User')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Users</span></a>
     </li>
     {{-- <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Master</span><i class="treeview-indicator fa fa-angle-right"></i></a>
