@@ -26,5 +26,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repositories\VendorsRepositoyInterface::class, \App\Repositories\VendorsRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\StoreRepositoryInterface::class, \App\Repositories\StoreRepository::class
+        );
     }
 }

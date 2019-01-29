@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 interface VendorsRepositoyInterface {
     function All();
-    function create($data);
+    function create(array $data);
     function findOne($id);
     function delete($id);
 	// public function update(array $data,$id);

@@ -3,31 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Vendors;
-use App\Repositories\VendorsRepositoyInterface;
-use App\Models\Category;
-use App\Repositories\Repository;
-use App\Repositories\Category\CategoryRepository;
+use App\Models\Store;
+use App\Repositories\StoreRepositoryInterface;
+
+use App\User;
 use Alert;
-class VendorsController extends Controller
+class StoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct(VendorsRepositoyInterface $vendorRepo,Category $category){
-        $this->vendorRepo = $vendorRepo;
-        $this->category = new CategoryRepository($category);
+    function __construct(StoreRepositoryInterface $store){
+        $this->store = $store;
     }
     public function index()
     {
-        $vendor = $this->vendorRepo->all();
-        // return $vendor;
-        return view('admin.vendors.index')
-                    ->with([
-                        'vendors' => $vendor
-                    ]);
+        $store = $this->store->all();
+        return view('admin.store.index')
+                ->with([
+                    'store' => $store
+                ]);
     }
 
     /**
@@ -37,11 +34,8 @@ class VendorsController extends Controller
      */
     public function create()
     {
-        $category = $this->category->active();
-        return view('admin.vendors.create')
-                    ->with([
-                        'category' => $category
-                    ]);
+        $user = User::where('role_id',2)->get();
+        return view('admin.store.create',compact('user'));
     }
 
     /**
@@ -52,10 +46,10 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-        $data =  $request->all();
-        $this->vendorRepo->create($data);
+        $data = $request->all();
+        $this->store->create($data);
         Alert::success('Data berhasil ditambah', 'Selamat!');
-        return redirect('/Vendors/create');
+        return redirect('/Toko/create');
     }
 
     /**
@@ -66,7 +60,7 @@ class VendorsController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**
@@ -77,12 +71,12 @@ class VendorsController extends Controller
      */
     public function edit($id)
     {
-        $vendor = $this->vendorRepo->findOne($id);
-        $category = $this->category->active();
-        return view('admin.vendors.edit')
+        $user = User::where('role_id',2)->get();
+        $store = $this->store->findOne($id);
+        return view('admin.store.edit')
                     ->with([
-                        'category' => $category,
-                        'vendors' => $vendor
+                        'user' => $user,
+                        'store' => $store
                     ]);
     }
 
@@ -95,15 +89,15 @@ class VendorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Vendors::where('id',$id)->update(array(
+        Store::where('id',$id)->update(array(
             'name'          => $request->input('name'),
-            'category_id'   => $request->input('category_id'),
+            'user_id'   => $request->input('user_id'),
             'email'         => $request->input('email'),
-            'notelp'        => $request->input('notelp'),
+            'telp'        => $request->input('telp'),
             'address'       => $request->input('address')
         ));
         Alert::success('Data berhasil diubah', 'Selamat!');
-        return redirect('/Vendors');
+        return redirect('/Toko');
     }
 
     /**
@@ -114,26 +108,24 @@ class VendorsController extends Controller
      */
     public function destroy($id)
     {
-        $this->vendorRepo->delete($id);
+        $this->store->delete($id);
         Alert::success('Data berhasil dihapus', 'Selamat!');
-        return redirect('/Vendors');
+        return redirect('/Toko');
     }
-
-
     public function active(Request $request, $id)
     {
-        Vendors::where('id',$id)->update(array(
-            'active' => 1
+        Store::where('id',$id)->update(array(
+            'status' => 1
         ));
         Alert::success('Data berhasil diubah', 'Selamat!');
-        return redirect('/Vendors');
+        return redirect('/Toko');
     }
     public function inactive(Request $request, $id)
     {
-        Vendors::where('id',$id)->update(array(
-            'active' => 0
+        Store::where('id',$id)->update(array(
+            'status' => 0
         ));
         Alert::success('Data berhasil diubah', 'Selamat!');
-        return redirect('/Vendors');
+        return redirect('/Toko');
     }
 }

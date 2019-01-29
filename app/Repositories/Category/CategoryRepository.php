@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Category;
 use App\Repositories\Repository;
-
+use App\Models\Category;
 /**
  * 
  */
@@ -32,6 +32,9 @@ class CategoryRepository implements Repository
 	public function getModel()
     {
         return $this->model;
-    }
+	}
+	public function active(){
+		return Category::where('status','Aktif')->get();
+	}
 }
 ?>

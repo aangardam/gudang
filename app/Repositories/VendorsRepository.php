@@ -10,7 +10,7 @@ class VendorsRepository implements VendorsRepositoyInterface
     function all(){
         return Vendors::all();
     }
-    function create($vendor){
+    function create(array $vendor){
         return Vendors::create($vendor);
     }
     function findOne($id){
