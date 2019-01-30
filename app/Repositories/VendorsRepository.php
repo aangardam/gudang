@@ -19,4 +19,7 @@ class VendorsRepository implements VendorsRepositoyInterface
     function delete($id){
         return Vendors::find($id)->delete();
     }
+    function active(){
+        return Vendors::where('status',1);
+    }
 }
