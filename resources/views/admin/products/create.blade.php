@@ -19,7 +19,7 @@
             <div class="tile">
                 <h5>Tambah PO</h5>
                 <hr>
-                <form class="forms-sample" action="{{ action('CategoryController@store')}}" method="post">
+                <form class="forms-sample" action="{{ url('Produk/PO/save')}}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
                     <div class="form-group">
@@ -83,7 +83,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">Gambar</label>
                             <div class="col-md-10">
-                                <input type="file" class="form-control" name="image" required="" placeholder="Target Selesai" id="imgInp" />                                @if ($errors->has('image'))
+                                <input type="file" class="form-control" name="image" placeholder="Target Selesai" id="imgInp" />                                @if ($errors->has('image'))
                                 <strong style="color:red">{{ $errors->first('image') }}</strong> @endif
                                 <img width="200" id="blah" class="img-rounded">
                             </div>
@@ -102,7 +102,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">QTY <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="number" class="form-control " id="qty" name="finishing" required="" placeholder="Jumlah Produk" />
+                                <input type="text" class="form-control " id="qty" required="" placeholder="Jumlah Produk" onkeyup="format()"/>
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="ibox-footer text-right">
                         <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
-                        <a href="{{ url('/Kategori') }}" class="btn btn-danger">Batal</a>
+                        <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Batal</a>
                     </div>
                 </form>
             </div>
@@ -185,6 +185,8 @@
     function format(){
         var price = $("#price").val();
         document.getElementById("price").value=formatNumber(price,0,0,true);
+        var qty = $("#qty").val();
+        document.getElementById("qty").value=formatNumber(qty,0,0,true);
     }
     function formatNumber(number, digits, decimalPlaces, withCommas)
     {
@@ -228,18 +230,36 @@
 <script>
     function tambah_produk(){
         var size = $("#size").val();
-        var qty = $("#qty").val();
+        var qty = Number($('#qty').val().replace(/,/g, ''));
         if(size == ''|| qty == ''){
             alert("Ukuran dan/atau qty tidak boleh kosong ");
         }else{
+            var no = Number($("#no").val())+1;
             $('#no').val(no);
             $("#detail").append(
                 "<tr id='no"+no+"'>"+
                     "<td>"+size+"</td>"+
-                    "<td>"+qty+"</td>"+
+                    "<td>"+convertToRupiah(qty)+"</td>"+
+                    "<td><button type='button' class='btn btn-danger btn-xs' onclick='fungsihapus("+no+")'>Hapus</button></td>"+
+
+                    "<input type='hidden'  name='size[]' value='"+size+"'>"+ 
+                    "<input type='hidden'  name='qty[]' value='"+qty+"'>"+ 
+                    "<input type='hidden'  name='quantity' value='"+no+"'>"+ 
+
                 "</tr>"
             )
         }
+    }
+    function fungsihapus(id){
+        console.log(id)
+        $("#no"+id+"").remove();
+    }
+    function convertToRupiah(angka)
+    {
+      var rupiah = '';    
+      var angkarev = angka.toString().split('').reverse().join('');
+      for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+',';
+          return rupiah.split('',rupiah.length-1).reverse().join('');
     }
 </script>
 @endsection

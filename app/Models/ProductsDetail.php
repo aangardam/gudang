@@ -12,3 +12,4 @@ class ProductsDetail extends Model
         return $this->belongsTo(Products::class,'id_products');
     }
 }
+

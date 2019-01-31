@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Products;
+use App\Models\ProductsDetail;
 use App\Repositories\Category\CategoryRepository;
 use App\Models\Category;
 use App\Repositories\ProductsRepositoryInterfece;
@@ -56,16 +57,34 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
+        for ($i=0; $i < $request->input('quantity') ; $i++) { 
+            $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
+            $stok = $qty + $request->input('qty')[$i];
+        }
+        // return $request->all();
+
         $data = $request->all();
-        if($request->hasFile('image')){
+        if($request->file('image')){
             $extension = $request->file('image')->getClientOriginalExtension();
             $products = "products_".date("YmdHis").strtolower('.'.$extension);
             $destination  = 'images/products/';
             $request->file('image')->move($destination,$products);
-            $data['image']=$destination.$products;
+            $data['image'] = $destination.$products;
         }
-        $save = Products::create($data);
-        // $hasil = Book::create($data);
+        // save product
+        $data['price'] =  preg_replace('/[^A-Za-z0-9\ ]/', '', $request->input('price'));
+        $data['total'] = $stok;
+        $produk = Products::create($data);
+        $jum =  $request->input('quantity');
+        for ($i=0; $i < $jum; $i++) { 
+            // return $save->id;
+            $detail['id_products'] = $produk->id;
+            $detail['size']     = $request->input('size')[$i];
+            $detail['qty']      = $request->input('qty')[$i];
+            $detail['status']   = 'Order';
+            $save = ProductsDetail::create($detail);
+        }
+
         Alert::success('Data berhasil ditambah', 'Selamat!');
         return redirect('/Produk/PO/create');
 
@@ -79,7 +98,14 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        // return $id;
+        $products = $this->products->findOne($id);
+        $detail = ProductsDetail::where('id_products',$id)->get();
+        return view('admin.products.detail')
+                ->with([
+                    'produk'    => $products,
+                    'detail'    => $detail
+                ]);
     }
 
     /**
@@ -157,5 +183,9 @@ class ProductsController extends Controller
     public function getVendor($id){
         $vendor = Vendors::where('category_id',$id)->get();
         return $vendor;
+    }
+
+    public function approve($id){
+        return $id;
     }
 }

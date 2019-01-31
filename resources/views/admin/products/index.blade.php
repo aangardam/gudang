@@ -75,9 +75,14 @@
                 <td> {{ $value->total }}</td>
                 <td> {{ $value->finishing }}</td>
                 <td> 
-                    <img src="{{ $value->image }}" width="100px">
+                  @if ($value->image == '')
+                      -
+                  @else
+                    <img src="{{ url($value->image) }}" width="100px">  
+                  @endif
+                    
                 </td>
-                <td>
+                <td valign="middle">
                   <a href=" {{  url('Produk/PO/'.$value->id.'/edit') }} " class="btn btn-primary btn-xs" style="padding: 0px 5px 0px 5px"> Ubah </a>
                   <a href=" {{  url('Produk/PO/'.$value->id.'/view') }} " class="btn btn-success btn-xs" style="padding: 0px 5px 0px 5px"> Lihat </a>
                 </td>

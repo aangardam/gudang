@@ -41,6 +41,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::group(['prefix' => 'Produk'], function () {
 		Route::get('/PO','ProductsController@index');
 		Route::get('/PO/create','ProductsController@create');
+		Route::post('/PO/save','ProductsController@store');
+		Route::get('PO/{id}/view','ProductsController@show');
+		Route::post('/PO/approve','ProductsController@approve');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 });
