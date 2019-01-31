@@ -21,7 +21,7 @@
                 <hr>
                 <form class="forms-sample" action="{{ url('Produk/PO/approve')}}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <input type="hidden" class="form-control" name="id" required="" placeholder="Kode" value="{{ $produk->id }}" readonly/>
+                    <input type="hidden" class="form-control" name="id_product" required="" placeholder="Kode" value="{{ $produk->id }}" readonly/>
                     <div class="form-group">
                         <div class="row">
                             <label for="name" class="col-md-2">Kode Transaksi<span class="text-danger">*</span></label>
@@ -108,8 +108,9 @@
                                                 <td> {{ $item->qty }} </td>
                                                 <td> {{ $item->status }}</td>
                                                 <td>
-                                                    <input type="checkbox" name="status[]" value="{{ $item->id }}">
-                                                    <input type="hidden" class="form-control" name="param" value="{{ $no }}" readonly/>
+                                                    @if($item->status == 'Order')
+                                                        <input type="checkbox" name="id_detail[]" value="{{ $item->id }}">
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -120,7 +121,7 @@
                     </div>
                     <div class="ibox-footer text-right">
                         <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
-                        <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Batal</a>
+                        <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Kembali</a>
                     </div>
                 </form>
             </div>

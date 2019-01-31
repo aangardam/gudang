@@ -185,7 +185,22 @@ class ProductsController extends Controller
         return $vendor;
     }
 
-    public function approve($id){
-        return $id;
+    public function approve(Request $request){
+        // return $request->all();
+        $param = $request->input('id_detail');
+        foreach ($param as $key => $value) {
+            $cek = ProductsDetail::where('id_products',$request->input('id_product'))
+                                ->where('status','Order')
+                                ->count();
+            if ($cek == 1) {
+                Products::where('id',$request->input('id_product'))->update(array(
+                    'status' => 'OK'
+                ));
+            }
+            ProductsDetail::where('id',$value)->update(array(
+                'status' => 'OK'
+            ));
+        }
+        return redirect('Produk/PO/'.$request->input('id_product').'/view');
     }
 }
