@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
 	// Route::group(['prefix' => 'front'], function() {
 	Route::group(['prefix' => 'Produk'], function () {
 		Route::get('/PO','ProductsController@index');
+		Route::get('/PO/create','ProductsController@create');
 	});
+	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 });
 

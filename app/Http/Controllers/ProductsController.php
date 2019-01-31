@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Repositories\ProductsRepositoryInterfece;
 use App\Repositories\VendorsRepositoyInterface;
 use Alert;
+use App\Models\Vendors;
 class ProductsController extends Controller
 {
     /**
@@ -40,7 +41,7 @@ class ProductsController extends Controller
     {
         $vendor = $this->vendorRepo->active();
         $category = $this->category->active();
-        return view('admin.products.tambahpo')
+        return view('admin.products.create')
                 ->with([
                     'category' => $category,
                     'vendor' => $vendor
@@ -151,5 +152,10 @@ class ProductsController extends Controller
         $this->products->delete($id);
         Alert::success('Data berhasil dihapus', 'Selamat!');
         return redirect('/Produk/PO');
+    }
+
+    public function getVendor($id){
+        $vendor = Vendors::where('category_id',$id)->get();
+        return $vendor;
     }
 }

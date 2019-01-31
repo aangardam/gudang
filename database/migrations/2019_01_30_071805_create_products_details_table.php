@@ -18,6 +18,7 @@ class CreateProductsDetailsTable extends Migration
             $table->integer('id_products')->unsigned();
             $table->foreign('id_products')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->string('size');
+            $table->string('satatus')->nullable();
             $table->integer('qty')->default(0);
             $table->timestamps();
         });
