@@ -117,13 +117,11 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $products = $this->products->findOne($id);
-        $vendor = $this->vendorRepo->active();
-        $category = $this->category->active();
-        return view('admin.products.tambahpo')
+        $detail = ProductsDetail::where('id_products',$id)->get();
+        return view('admin.products.edit')
                 ->with([
-                    'category' => $category,
-                    'vendor' => $vendor,
-                    'products' => $products
+                    'produk'    => $products,
+                    'detail'    => $detail
                 ]);
 
     }
