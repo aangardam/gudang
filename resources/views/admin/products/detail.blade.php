@@ -1,17 +1,17 @@
 @extends('layouts.admin') 
-@section('title') | Detail PO
+@section('title') | Detail 
 @endsection
  
 @section('content')
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-tasks"></i> PO </h1>
+            <h1><i class="fa fa-tasks"></i> Detail </h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('home') }}"> <i class="fa fa-home fa-lg"></i></li></a>
-                <li class="breadcrumb-item"><a href="{{ url('Produk/PO')}}"> PO </a></li>
-                <li class="breadcrumb-item"> Detail PO </li>
+                {{--  <li class="breadcrumb-item"><a href="{{ url('Produk/')}}">  </a></li>  --}}
+                <li class="breadcrumb-item"> Detail  </li>
         </ul>
     </div>
     <div class="row">
@@ -96,7 +96,9 @@
                                             <td> Ukuran </td>
                                             <td> QTY </td>
                                             <td> Status </td>
+                                            @if($produk->status != 'OK')
                                             <td> Aksi </td>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -106,6 +108,7 @@
                                                 <td> {{ $no++}}</td>
                                                 <td> {{ $item->size }} </td>
                                                 <td> {{ $item->qty }} </td>
+                                                
                                                 <td> {{ $item->status }}</td>
                                                 <td>
                                                     @if($item->status == 'Order')
@@ -120,8 +123,10 @@
                         </div>
                     </div>
                     <div class="ibox-footer text-right">
-                        <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
-                        <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Kembali</a>
+                        @if($produk->status != 'OK')
+                            <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
+                            <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Kembali</a>
+                        @endif
                     </div>
                 </form>
             </div>

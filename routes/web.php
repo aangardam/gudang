@@ -45,6 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('PO/{id}/view','ProductsController@show');
 		Route::get('PO/{id}/edit','ProductsController@edit');
 		Route::post('/PO/approve','ProductsController@approve');
+
+		Route::get('/Stok','ProductsController@gudang');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 });

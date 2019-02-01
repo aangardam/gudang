@@ -32,6 +32,15 @@ class ProductsController extends Controller
                     'products' => $products
                 ]);
     }
+    public function gudang()
+    {
+        // return "Halaman PO";
+        $products = $this->products->stokgudang();
+        return view('admin.products.gudang')
+                ->with([
+                    'products' => $products
+                ]);
+    }
 
     /**
      * Show the form for creating a new resource.
