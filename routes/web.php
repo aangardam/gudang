@@ -36,8 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('Toko/inactive/{id}','StoreController@inactive');
 
 	// Barang
-	// Route::resource('Barang');
-	// Route::group(['prefix' => 'front'], function() {
+	
 	Route::group(['prefix' => 'Produk'], function () {
 		Route::get('/PO','ProductsController@index');
 		Route::get('/PO/create','ProductsController@create');
