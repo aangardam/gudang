@@ -43,10 +43,13 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/PO/create','ProductsController@create');
 		Route::post('/PO/save','ProductsController@store');
 		Route::get('PO/{id}/view','ProductsController@show');
+		
 		Route::get('PO/{id}/edit','ProductsController@edit');
 		Route::post('/PO/approve','ProductsController@approve');
-
+		// gudang
 		Route::get('/Stok','ProductsController@gudang');
+		Route::get('Send/{id}/view2','ProductsController@show2');
+		Route::post('Stok/save','ProductsController@store2');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 });

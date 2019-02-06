@@ -55,7 +55,7 @@
                     
                 </td>
                 <td valign="middle">
-                  <a href=" {{  url('Produk/PO/'.$value->id.'/view') }} " class="btn btn-success btn-xs" style="padding: 0px 5px 0px 5px"> Lihat </a>
+                  <a href=" {{  url('Produk/Send/'.$value->id.'/view2') }} " class="btn btn-success btn-xs" style="padding: 0px 5px 0px 5px"> Lihat </a>
                 </td>
                
               </tr>

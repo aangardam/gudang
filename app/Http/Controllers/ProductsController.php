@@ -11,6 +11,8 @@ use App\Repositories\ProductsRepositoryInterfece;
 use App\Repositories\VendorsRepositoyInterface;
 use Alert;
 use App\Models\Vendors;
+use App\Models\Store;
+use App\Models\ProductStore;
 class ProductsController extends Controller
 {
     /**
@@ -98,6 +100,48 @@ class ProductsController extends Controller
         return redirect('/Produk/PO/create');
 
     }
+    public function store2(Request $request)
+    {
+        for ($i=0; $i < $request->input('quantity') ; $i++) { 
+            $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
+            $stok = $qty + $request->input('qty')[$i];
+        }
+        // return $request->all();
+        // save to produk store
+        for ($j=0; $j < $request->input('quantity') ; $j++) { 
+            $data['store_id']   = $request->input('id_product');
+            $data['product_id'] = $request->input('store')[$j];
+            $data['size']       = $request->input('size')[$j];
+            $data['qty']        = $request->input('qty')[$j];
+            $data['code']        = $request->input('no_trans');
+
+            ProductStore::create($data);
+        }
+        
+        // update produk and produk detail
+        $produk = Products::select('total')
+                                ->where('id',$request->input('id_product'))
+                                ->first();
+        // return $produk->total;
+        Products::where('id',$request->input('id_product'))->update(array(
+            'total' => $produk->total - $stok
+        ));
+        for ($x=0; $x < $request->input('quantity') ; $x++) { 
+            $qty = ProductsDetail::select('qty')
+                                        ->where('id_products',$request->input('id_product'))
+                                        ->where('size',$request->input('size')[$x])
+                                        ->first();
+            // $qty[$x] = $qty->qty;
+            ProductsDetail::where('id_products',$request->input('id_product'))
+                         ->where('size',$request->input('size')[$x])
+                         ->update(array(
+                            'qty' => $qty->qty - $request->input('qty')[$x]
+                         ));
+        }
+        Alert::success('Data berhasil ditambah', 'Selamat!');
+        return redirect('/Produk/Stok');
+
+    }
 
     /**
      * Display the specified resource.
@@ -114,6 +158,19 @@ class ProductsController extends Controller
                 ->with([
                     'produk'    => $products,
                     'detail'    => $detail
+                ]);
+    }
+    public function show2($id)
+    {
+        // return $id;
+        $products = $this->products->findOne($id);
+        $detail = ProductsDetail::where('id_products',$id)->get();
+        $store = Store::all();
+        return view('admin.products.detail2')
+                ->with([
+                    'produk'    => $products,
+                    'detail'    => $detail,
+                    'store'     => $store
                 ]);
     }
 
