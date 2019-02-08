@@ -48,9 +48,9 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <label for="email" class="col-md-2">Email  </label>
+                            <label for="email" class="col-md-2">Email  <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="email" placeholder="Email " />
+                                <input type="email" class="form-control" name="email" placeholder="Email " required/>
                             </div>
                         </div>
                     </div>

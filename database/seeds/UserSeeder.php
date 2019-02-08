@@ -25,6 +25,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Staff Gudang',
                 'display_name' => 'Staff Gudang',
+            ],
+            [
+                'name' => 'Vendors',
+                'display_name' => 'Vendors',
             ]
         ];
         foreach ($roles as $key => $value) {

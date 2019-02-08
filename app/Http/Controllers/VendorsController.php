@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Repositories\Repository;
 use App\Repositories\Category\CategoryRepository;
 use Alert;
+use App\User;
 class VendorsController extends Controller
 {
     /**
@@ -53,6 +54,16 @@ class VendorsController extends Controller
     public function store(Request $request)
     {
         $data =  $request->all();
+        // create user
+        $users = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt('12341234'),
+            'role_id' => '4'
+        ]);
+        $users->attachRole($request->input('role_id'));
+        // end
+        $data['user_id'] = $users->id;
         $this->vendorRepo->create($data);
         Alert::success('Data berhasil ditambah', 'Selamat!');
         return redirect('/Vendors/create');
