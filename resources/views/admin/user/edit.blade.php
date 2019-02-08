@@ -146,7 +146,7 @@
         var password = $("#password2").val();
         var confirmPassword = $("#password").val();
         if(password.length != 0 || confirmPassword.length != 0){
-          if(password.length >= 8 || confirmPassword.length >= 8 ){
+          if(password.length >= 4 || confirmPassword.length >= 4 ){
             if (password != confirmPassword) {
               swal({
                 type: 'error',

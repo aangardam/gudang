@@ -19,57 +19,14 @@
             <div class="tile">
                 <h5>Detail PO</h5>
                 <hr>
-                <form class="forms-sample" action="{{ url('Produk/PO/approve')}}" method="post" enctype="multipart/form-data">
+                <form class="forms-sample" action="{{ url('Produk/Stok/save') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" class="form-control" name="id_product" required="" placeholder="Kode" value="{{ $produk->id }}" readonly/>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="name" class="col-md-2">Kode Transaksi<span class="text-danger">*</span></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" name="no_trans" required="" placeholder="Kode" value="{{ $produk->no_trans }}" readonly/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="name" class="col-md-2">Kategori<span class="text-danger">*</span></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{ $produk->category->name }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="name" class="col-md-2">Vendor<span class="text-danger">*</span></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{ $produk->vendor->name }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <div class="row">
                             <label for="email" class="col-md-2">Nama Produk <span class="text-danger">*</span></label>
                             <div class="col-md-10">
                                 <input type="text" class="form-control" name="name" required="" placeholder="Nama Produk" value="{{ $produk->name }}" readonly/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="email" class="col-md-2">Harga Jual </label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" name="price" id="price" placeholder="Harga Jual" value="{{ $produk->price }}" readonly
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="email" class="col-md-2">Target Selesai <span class="text-danger">*</span></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control datepicker" id="datepicker" name="finishing" required="" placeholder="Target Selesai"
-                                    value="{{ $produk->finishing }}" readonly />
                             </div>
                         </div>
                     </div>
@@ -83,8 +40,6 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-
                     <div class="form-group">
                         <div class="row">
                             <label for="email" class="col-md-2"></label>
@@ -95,10 +50,6 @@
                                             <td> No </td>
                                             <td> Ukuran </td>
                                             <td> QTY </td>
-                                            <td> Status </td>
-                                            @if($produk->status != 'OK')
-                                            <td> Aksi </td>
-                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,13 +59,6 @@
                                                 <td> {{ $no++}}</td>
                                                 <td> {{ $item->size }} </td>
                                                 <td> {{ $item->qty }} </td>
-                                                
-                                                <td> {{ $item->status }}</td>
-                                                <td>
-                                                    @if($item->status == 'PO')
-                                                        <input type="checkbox" name="id_detail[]" value="{{ $item->id }}">
-                                                    @endif
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -122,19 +66,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ibox-footer text-right">
-                        @if($produk->status != 'OK')
-                            <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ url('/Produk/PO/') }}" class="btn btn-danger">Kembali</a>
-                        @endif
-                    </div>
+                    <hr>
                 </form>
             </div>
         </div>
     </div>
 </main>
 @endsection
- 
 @section('script')
 <script type="text/javascript">
     function readURL(input) {

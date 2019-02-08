@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
 		// gudang
 		Route::get('/Stok','ProductsController@gudang');
 		Route::get('Send/{id}/view2','ProductsController@show2');
+		Route::get('Send','ProductsController@send');
 		Route::post('Stok/save','ProductsController@store2');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');

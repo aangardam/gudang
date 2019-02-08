@@ -138,7 +138,7 @@
       $("#btnSubmit").click(function () {
         var password = $("#password2").val();
         var confirmPassword = $("#password").val();
-        if(password.length >= 8 || confirmPassword.length >= 8 ){
+        if(password.length >= 4 || confirmPassword.length >= 4 ){
           if (password != confirmPassword) {
                 // alert("Password Tidak Sesuai");
                 swal({

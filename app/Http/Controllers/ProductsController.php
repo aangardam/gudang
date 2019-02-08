@@ -254,9 +254,10 @@ class ProductsController extends Controller
         $param = $request->input('id_detail');
         foreach ($param as $key => $value) {
             $cek = ProductsDetail::where('id_products',$request->input('id_product'))
-                                ->where('status','Order')
+                                ->where('status','PO')
                                 ->count();
-            if ($cek == 1) {
+            // return $cek;
+            if ($cek <= 1) {
                 Products::where('id',$request->input('id_product'))->update(array(
                     'status' => 'OK'
                 ));
@@ -266,5 +267,16 @@ class ProductsController extends Controller
             ));
         }
         return redirect('Produk/PO/'.$request->input('id_product').'/view');
+    }
+
+    public function send(){
+        $store = Store::where('status',1)->get();
+        $produk = Products::where('status','OK')
+                        ->where('total','>=',1)
+                        ->get();
+        return view('admin.products.kirim')->with([
+            'store'     => $store,
+            'produk'    => $produk
+        ]);
     }
 }

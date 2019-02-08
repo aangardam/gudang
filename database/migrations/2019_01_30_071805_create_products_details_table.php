@@ -19,7 +19,7 @@ class CreateProductsDetailsTable extends Migration
             $table->foreign('id_products')->references('id')->on('products')->onDelete('cascade');
             
             $table->string('size');
-            $table->string('status')->nullable();
+            $table->string('status')->default('PO');
             $table->integer('qty')->default(0);
             $table->timestamps();
         });

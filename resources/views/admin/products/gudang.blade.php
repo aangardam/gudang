@@ -19,21 +19,21 @@
     <div class="col-md-12">
       <div class="tile">
         <div align="right">
-            {{--  <a href="{{ url ('Produk/PO/create') }}" class="btn btn-primary btn-sm">
-                <b><i class="fa fa-plus"></i></b> PO
-            </a>  --}}
+             <a href="{{ url ('Produk/Send/') }}" class="btn btn-primary btn-sm">
+                <b><i class="fa fa-send"></i></b> Kirim
+            </a> 
         </div>
         <hr>
         <table class="table table-hover table-striped" id="sampleTable">
             <thead>
                 <tr>
                   <td><b> No </b></td>
-                  <td><b> No Transaksi </b></td>
+                  <td><b> Kode </b></td>
                   <td><b> Nama </b></td>
                   <td><b> Harga </b></td>
                   <td><b> QTY </b></td>
                   <td><b> Gambar </b></td>
-                  <td><b> Aksi  </b></td>
+                  {{-- <td><b> Aksi  </b></td> --}}
 
                 </tr>
             </thead>
@@ -54,9 +54,9 @@
                   @endif
                     
                 </td>
-                <td valign="middle">
+                {{-- <td valign="middle">
                   <a href=" {{  url('Produk/Send/'.$value->id.'/view2') }} " class="btn btn-success btn-xs" style="padding: 0px 5px 0px 5px"> Lihat </a>
-                </td>
+                </td> --}}
                
               </tr>
             @endforeach
