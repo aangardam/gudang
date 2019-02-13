@@ -26,7 +26,7 @@
                         <div class="row">
                             <label for="name" class="col-md-2">Kode <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="no_trans" required="" placeholder="Kode" value="{{ $produk->no_trans }}" readonly/>
+                                <input type="text" class="form-control" name="code" required="" placeholder="Kode" value="{{ $produk->code }}" readonly/>
                             </div>
                         </div>
                     </div>

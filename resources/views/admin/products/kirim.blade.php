@@ -26,7 +26,7 @@
                         <div class="row">
                             <label for="name" class="col-md-2">Surat Jalan <span class="text-danger">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="no_trans" required="" placeholder="Surat Jalan"/>
+                                <input type="text" class="form-control" name="nosurat" required="" placeholder="Surat Jalan" value="{{ $nosurat }}" readonly="" />
                             </div>
                             <label for="email" class="col-md-2">Toko <span class="text-danger">*</span></label>
                             <div class="col-md-4">
@@ -45,6 +45,7 @@
                             <label for="name" class="col-md-2">Produk <span class="text-danger">*</span></label>
                             <div class="col-md-4">
                                 <select name="product_id" id="produk" class="form-control">
+                                    <option value="" selected="" disabled=""> Pilih Produk</option>
                                     @foreach ($produk as $item)
                                         <option value="{{ $item->id }}-{{ $item->name }}"> {{ $item->name }}</option>
                                     @endforeach

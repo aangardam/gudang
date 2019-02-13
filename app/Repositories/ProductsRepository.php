@@ -10,7 +10,7 @@ class ProductsRepository implements ProductsRepositoryInterfece
         return Products::where('status','PO')->get();
     }
     function stokgudang(){
-        return Products::where('status','OK')->get();
+        return Products::where('status','GUDANG')->get();
     }
     function create(array $data){
         return Products::create($data);

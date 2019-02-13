@@ -22,6 +22,8 @@ class CreateVendorsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('active');
             $table->string('email')->nullable();
+            $table->integer('iduser')->unsigned()->nullable();
+            $table->foreign('iduser')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

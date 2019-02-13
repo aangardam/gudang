@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('no_trans');
+            $table->string('code');
             $table->integer('price')->default(0);
             $table->string('finishing'); //tgl selesai
             $table->string('status')->default('PO');

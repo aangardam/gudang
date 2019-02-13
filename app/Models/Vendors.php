@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Vendors extends Model
 {
     use SoftDeletes;
-    protected $fillable=['name','address','notelp','email','category_id','active'];
+    protected $fillable=['name','address','notelp','email','category_id','active','iduser'];
     protected $dates = ['deleted_at'];
 
     public function category(){

@@ -1,7 +1,7 @@
 
 @extends('layouts.admin')
 @section('title')
-| PO
+| Produk
 @endsection
 @section('script')
 <script>
@@ -10,7 +10,7 @@
   
       swal({
           title: "Apakah Anda Yakin?",
-          text: "PO yang sudah di hapus tidak dapat di kembalikan!",
+          text: "Produk yang sudah di hapus tidak dapat di kembalikan!",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
@@ -21,7 +21,7 @@
       }, function () {
           document.getElementById('delete-' + id).submit();
           swal("Berhasil!",
-              "PO sudah dihapus.",
+              "Produk sudah dihapus.",
               "success");
       });
   };
@@ -31,12 +31,12 @@
 <main class="app-content">
   <div class="app-title">
     <div>
-      <h1><i class="fa fa-tasks7"></i> PO</h1>
+      <h1><i class="fa fa-tasks7"></i> Produk</h1>
       {{-- <p>Start a beautiful journey here</p> --}}
     </div>
     <ul class="app-breadcrumb breadcrumb">
       <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-      <li class="breadcrumb-item"><a href="#">PO</a></li>
+      <li class="breadcrumb-item"><a href="#">Produk</a></li>
     </ul>
   </div>
   <div class="row">
@@ -44,7 +44,7 @@
       <div class="tile">
         <div align="right">
             <a href="{{ url ('Produk/PO/create') }}" class="btn btn-primary btn-sm">
-                <b><i class="fa fa-plus"></i></b> PO
+                <b><i class="fa fa-plus"></i></b> Produk
             </a>
         </div>
         <hr>
@@ -68,11 +68,11 @@
             @foreach($products as $key=>$value)
               <tr>
                 <td> {{ $key+1 }} </td>
-                <td> {{ $value->no_trans }}</td>
+                <td> {{ $value->code }}</td>
                 <td> {{ $value->name }}</td>
                 <td align="right"> {{ number_format($value->price) }}</td>
                 <td> {{ $value->vendor->name }} </td>
-                <td> {{ $value->total }}</td>
+                <td> {{ number_format($value->total) }}</td>
                 <td> {{ $value->finishing }}</td>
                 <td> 
                   @if ($value->image == '')

@@ -23,7 +23,7 @@ class CreateProductStoresTable extends Migration
 
             $table->string('size');
             $table->integer('qty');
-            $table->string('code')->nullable();
+            $table->string('status')->default('Kirim');
             $table->string('nosurat');
             $table->timestamps();
         });

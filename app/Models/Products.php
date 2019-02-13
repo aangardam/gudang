@@ -7,7 +7,7 @@ use App\Models\Vendors;
 use App\Models\Category;
 class Products extends Model
 {
-    protected $fillable = ['name','no_trans','price','finishing','status','total','image','vendor_id','category_id'];
+    protected $fillable = ['name','code','price','finishing','status','total','image','vendor_id','category_id'];
 
     public function vendor(){
         return $this->belongsTo(Vendors::class,'vendor_id');

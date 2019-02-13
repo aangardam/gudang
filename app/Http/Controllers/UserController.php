@@ -23,7 +23,8 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = $this->users->findAll();
+        // $users = $this->users->findAll();
+        $users = User::whereIn('role_id',[2,3])->get();
         return view('admin.user.index')
                 ->with('users',$users);
     }
@@ -35,7 +36,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $role = Role::all();
+        $role = Role::whereIn('id',[2,3])->get();
         return view('admin.user.create')
                 ->with('role',$role);
     }
@@ -79,7 +80,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::all();
+        $role = Role::whereIn('id',[2,3])->get();
         $users = $this->users->findOne($id);
         return view('admin.user.edit')
                 ->with([

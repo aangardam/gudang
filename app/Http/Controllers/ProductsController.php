@@ -68,11 +68,13 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        for ($i=0; $i < $request->input('quantity') ; $i++) { 
-            $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
-            $stok = $qty + $request->input('qty')[$i];
-        }
         // return $request->all();
+        $stok = 0;
+        for ($i=0; $i < $request->input('quantity') ; $i++) { 
+            // $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
+            $stok = $stok + $request->input('qty')[$i];
+        }
+        
 
         $data = $request->all();
         if($request->file('image')){
@@ -102,9 +104,14 @@ class ProductsController extends Controller
     }
     public function store2(Request $request)
     {
+        // for ($i=0; $i < $request->input('quantity') ; $i++) { 
+        //     $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
+        //     $stok = $qty + $request->input('qty')[$i];
+        // }
+        $stok = 0;
         for ($i=0; $i < $request->input('quantity') ; $i++) { 
-            $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
-            $stok = $qty + $request->input('qty')[$i];
+            // $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
+            $stok = $stok + $request->input('qty')[$i];
         }
         // return $request->all();
         // save to produk store
@@ -113,7 +120,7 @@ class ProductsController extends Controller
             $data['product_id'] = $request->input('store')[$j];
             $data['size']       = $request->input('size')[$j];
             $data['qty']        = $request->input('qty')[$j];
-            $data['code']        = $request->input('no_trans');
+            // $data['code']        = $request->input('no_trans');
 
             ProductStore::create($data);
         }
@@ -259,24 +266,32 @@ class ProductsController extends Controller
             // return $cek;
             if ($cek <= 1) {
                 Products::where('id',$request->input('id_product'))->update(array(
-                    'status' => 'OK'
+                    'status' => 'GUDANG'
                 ));
             }
             ProductsDetail::where('id',$value)->update(array(
-                'status' => 'OK'
+                'status' => 'GUDANG'
             ));
         }
         return redirect('Produk/PO/'.$request->input('id_product').'/view');
     }
 
     public function send(){
+        $nosurat = ProductStore::all()->count();
+
+        $nourut = $nosurat == 0 ? 1 : $nosurat+1;
+        // return $nourut;
+        $tgl = date('Ym');
+        $nosurat = $tgl.sprintf("%04s", $nourut);
+        // return $nosurat;
         $store = Store::where('status',1)->get();
-        $produk = Products::where('status','OK')
+        $produk = Products::where('status','GUDANG')
                         ->where('total','>=',1)
                         ->get();
         return view('admin.products.kirim')->with([
             'store'     => $store,
-            'produk'    => $produk
+            'produk'    => $produk,
+            'nosurat'   => $nosurat
         ]);
     }
 }

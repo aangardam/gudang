@@ -1,17 +1,17 @@
 @extends('layouts.admin') 
-@section('title') | Tambah PO
+@section('title') | Tambah Produk
 @endsection
  
 @section('content')
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-tasks"></i> PO </h1>
+            <h1><i class="fa fa-tasks"></i> Produk </h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('home') }}"> <i class="fa fa-home fa-lg"></i></li></a>
-                <li class="breadcrumb-item"><a href="{{ url('Produk/PO')}}"> PO </a></li>
-                <li class="breadcrumb-item"> Tambah PO </li>
+                <li class="breadcrumb-item"><a href="{{ url('Produk/PO')}}"> Produk </a></li>
+                <li class="breadcrumb-item"> Tambah Produk </li>
         </ul>
     </div>
     <div class="row">
@@ -26,7 +26,7 @@
                         <div class="row">
                             <label for="name" class="col-md-2">Kode<span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="no_trans" required="" placeholder="Kode" value="{{  str_random(5) }}" readonly />
+                                <input type="text" class="form-control" name="code" required="" placeholder="Kode"  />
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">Ukuran <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control " id="size" name="size" required="" placeholder="Ukuran" value="All Size" />
+                                <input type="text" class="form-control " id="size" name="size" placeholder="Ukuran" value="All Size" />
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">QTY <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control " id="qty" required="" placeholder="Jumlah Produk" onkeyup="format()"/>
+                                <input type="text" class="form-control " id="qty" placeholder="Jumlah Produk" onkeyup="format()"/>
                             </div>
                         </div>
                     </div>
@@ -129,6 +129,7 @@
                                     </thead>
                                     <input type="hidden" id="no" value="0">
                                     <tbody id="detail"></tbody>
+                                    
                                 </table>
                             </div>
                         </div>
