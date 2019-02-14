@@ -255,6 +255,20 @@ class ProductsController extends Controller
         $vendor = Vendors::where('category_id',$id)->get();
         return $vendor;
     }
+    public function getSize($id){
+        $size = ProductsDetail::where('id_products',$id)->get();
+        return $size;
+    }
+    public function getSum($id){
+        $exp = explode('-', $id);
+        $id = $exp[0];
+        $size = $exp[1];
+
+        $sum = ProductsDetail::where('id_products',$id)
+                            ->where('size',$size)
+                            ->get();
+        return $sum;
+    }
 
     public function approve(Request $request){
         // return $request->all();

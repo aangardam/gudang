@@ -53,5 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::post('Stok/save','ProductsController@store2');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
+	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
+	Route::get('/ajax/getSum/{id}','ProductsController@getSum');
 });
 

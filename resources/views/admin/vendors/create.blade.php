@@ -58,7 +58,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">No Telepon </label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="notelp" placeholder="No Telepon " />
+                                <input type="number" class="form-control" name="notelp" placeholder="No Telepon " />
                             </div>
                         </div>
                     </div>

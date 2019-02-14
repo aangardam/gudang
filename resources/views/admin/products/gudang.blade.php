@@ -42,7 +42,7 @@
             @foreach($products as $key=>$value)
               <tr>
                 <td> {{ $key+1 }} </td>
-                <td> {{ $value->no_trans }}</td>
+                <td> {{ $value->code }}</td>
                 <td> {{ $value->name }}</td>
                 <td align="right"> {{ number_format($value->price) }}</td>
                 <td> {{ $value->total }}</td>

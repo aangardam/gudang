@@ -63,7 +63,7 @@
                         <div class="row">
                             <label for="email" class="col-md-2">No Telepon </label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="notelp" required="" placeholder="No Telepon " value="{{ $vendors->notelp }}"/>
+                                <input type="number" class="form-control" name="notelp" required="" placeholder="No Telepon " value="{{ $vendors->notelp }}"/>
                             </div>
                         </div>
                     </div>

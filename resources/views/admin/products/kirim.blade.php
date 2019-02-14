@@ -53,11 +53,8 @@
                             </div>
                             <label for="email" class="col-md-2">Ukuran <span class="text-danger">*</span></label>
                             <div class="col-md-4">
-                                <select name="store_id" class="form-control" required>
+                                <select name="size_id" id="size_id" class="form-control" required>
                                     <option value="" selected disabled>Pilih Ukuran</option>
-                                    @foreach ($store as $item)
-                                        <option value="{{ $item->id }}"> {{ $item->name }}</option>
-                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -66,7 +63,7 @@
                         <div class="row">
                             <label for="name" class="col-md-2">Jumlah <span class="text-danger">*</span></label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="no_trans" required="" placeholder="Jumlah"/>
+                                <input type="number" class="form-control" name="qty" id="qty" required="" placeholder="Jumlah"/>
                             </div>
                             <label for="email" class="col-md-2"></label>
                             <div class="col-md-4">
@@ -109,8 +106,8 @@
     function tambah_produk(){
         var size = $("#size").val();
         var qty = $('#qty').val();
-        var store = $('#store_id').val();
-        var store = store.split('-');
+        var product_id = $(this).val().split("-");
+
         if(size == ''|| qty == '' || store == ''){
             alert("Data tidak boleh kosong ");
         }else{
@@ -136,5 +133,31 @@
         console.log(id)
         $("#no"+id+"").remove();
     }
+</script>
+<script>
+    $('#produk').on('change',function(){
+        var product_id = $(this).val().split("-");
+        $.ajax({
+            url:'/ajax/getSize/'+product_id[0],
+            success:function(response){
+                $("#size_id").html(response);
+                $("#size_id").append("<option value=''> Pilih Ukuran </option>");
+                $.each(response, function (index, size) {
+                    $("#size_id").append("<option>"  + size.size + "</option>");
+                });
+            }
+        })
+    });
+    $('#size_id').on('change',function(){
+        var size = $(this).val();
+        var product_id = $('#produk').val().split("-");
+        $.ajax({
+            url:'/ajax/getSum/'+product_id[0]+'-'+size,
+            success:function(response){
+                document.getElementById("qty").value=response[0].qty;
+            }
+        })
+        
+    });
 </script>
 @endsection

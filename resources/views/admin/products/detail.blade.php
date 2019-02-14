@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h5>Detail PO</h5>
+                <h5>Detail </h5>
                 <hr>
                 <form class="forms-sample" action="{{ url('Produk/PO/approve')}}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -95,8 +95,7 @@
                                             <td> No </td>
                                             <td> Ukuran </td>
                                             <td> QTY </td>
-                                            <td> Status </td>
-                                            @if($produk->status != 'OK')
+                                            @if($produk->status == 'PO')
                                             <td> Aksi </td>
                                             @endif
                                         </tr>
@@ -108,8 +107,6 @@
                                                 <td> {{ $no++}}</td>
                                                 <td> {{ $item->size }} </td>
                                                 <td> {{ $item->qty }} </td>
-                                                
-                                                <td> {{ $item->status }}</td>
                                                 <td>
                                                     @if($item->status == 'PO')
                                                         <input type="checkbox" name="id_detail[]" value="{{ $item->id }}">
