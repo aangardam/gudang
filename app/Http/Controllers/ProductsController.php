@@ -102,51 +102,47 @@ class ProductsController extends Controller
         return redirect('/Produk/PO/create');
 
     }
-    public function store2(Request $request)
+    public function store2(Request $request) //masuk ke gudang
     {
-        // for ($i=0; $i < $request->input('quantity') ; $i++) { 
-        //     $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
-        //     $stok = $qty + $request->input('qty')[$i];
-        // }
+        // return $request->all();
         $stok = 0;
         for ($i=0; $i < $request->input('quantity') ; $i++) { 
-            // $qty = $i == 0 ? 0 : $request->input('qty')[$i-1];
             $stok = $stok + $request->input('qty')[$i];
         }
-        // return $request->all();
         // save to produk store
         for ($j=0; $j < $request->input('quantity') ; $j++) { 
-            $data['store_id']   = $request->input('id_product');
-            $data['product_id'] = $request->input('store')[$j];
+            $data['store_id']   = $request->input('store_id');
+            $data['product_id'] = $request->input('produk')[$j];
             $data['size']       = $request->input('size')[$j];
             $data['qty']        = $request->input('qty')[$j];
-            // $data['code']        = $request->input('no_trans');
+            $data['status']     = 'Pending';
+            $data['nosurat']    = $request->input('nosurat');
 
             ProductStore::create($data);
         }
         
         // update produk and produk detail
         $produk = Products::select('total')
-                                ->where('id',$request->input('id_product'))
+                                ->where('id',$request->input('produk'))
                                 ->first();
         // return $produk->total;
-        Products::where('id',$request->input('id_product'))->update(array(
+        Products::where('id',$request->input('produk'))->update(array(
             'total' => $produk->total - $stok
         ));
         for ($x=0; $x < $request->input('quantity') ; $x++) { 
             $qty = ProductsDetail::select('qty')
-                                        ->where('id_products',$request->input('id_product'))
+                                        ->where('id_products',$request->input('produk'))
                                         ->where('size',$request->input('size')[$x])
                                         ->first();
-            // $qty[$x] = $qty->qty;
-            ProductsDetail::where('id_products',$request->input('id_product'))
+            // return $qty;;
+            ProductsDetail::where('id_products',$request->input('produk'))
                          ->where('size',$request->input('size')[$x])
                          ->update(array(
                             'qty' => $qty->qty - $request->input('qty')[$x]
                          ));
         }
         Alert::success('Data berhasil ditambah', 'Selamat!');
-        return redirect('/Produk/Stok');
+        return redirect('/Produk/Send');
 
     }
 
@@ -307,5 +303,10 @@ class ProductsController extends Controller
             'produk'    => $produk,
             'nosurat'   => $nosurat
         ]);
+    }
+
+    public function toko(){
+        $data = ProductStore::all();
+        return view('admin.products.toko',compact('data'));
     }
 }

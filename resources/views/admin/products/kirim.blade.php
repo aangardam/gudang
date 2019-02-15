@@ -104,25 +104,25 @@
 @section('script')
 <script>
     function tambah_produk(){
-        var size = $("#size").val();
+        var size = $("#size_id").val();
         var qty = $('#qty').val();
-        var product_id = $(this).val().split("-");
+        var produk = $('#produk').val().split("-");
 
-        if(size == ''|| qty == '' || store == ''){
+        if(size == ''|| qty == '' ){
             alert("Data tidak boleh kosong ");
         }else{
             var no = Number($("#no").val())+1;
             $('#no').val(no);
             $("#detail").append(
                 "<tr id='no"+no+"'>"+
-                    "<td>"+store[1]+"</td>"+
+                    "<td>"+produk[1]+"</td>"+
                     "<td>"+size+"</td>"+
                     "<td>"+qty+"</td>"+
                     "<td><button type='button' class='btn btn-danger btn-xs' onclick='fungsihapus("+no+")'>Hapus</button></td>"+
 
                     "<input type='hidden'  name='size[]' value='"+size+"'>"+ 
                     "<input type='hidden'  name='qty[]' value='"+qty+"'>"+ 
-                    "<input type='hidden'  name='store[]' value='"+store[0]+"'>"+ 
+                    "<input type='hidden'  name='produk[]' value='"+produk[0]+"'>"+ 
                     "<input type='hidden'  name='quantity' value='"+no+"'>"+ 
 
                 "</tr>"

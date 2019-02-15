@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::group(['prefix' => 'Produk'], function () {
 		Route::get('/PO','ProductsController@index');
 		Route::get('/PO/create','ProductsController@create');
-		Route::post('/PO/save','ProductsController@store');
+		Route::post('/PO/save','ProductsController@store'); //tambah produk
 		Route::get('PO/{id}/view','ProductsController@show');
 		
 		Route::get('PO/{id}/edit','ProductsController@edit');
@@ -50,7 +50,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/Stok','ProductsController@gudang');
 		Route::get('Send/{id}/view2','ProductsController@show2');
 		Route::get('Send','ProductsController@send');
-		Route::post('Stok/save','ProductsController@store2');
+		Route::post('Stok/save','ProductsController@store2'); // kirim ke toko
+		Route::get('/store','ProductsController@toko');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
