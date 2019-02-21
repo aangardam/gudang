@@ -7,7 +7,7 @@
 <main class="app-content">
   <div class="app-title">
     <div>
-      <h1><i class="fa fa-tasks7"></i> Stok Toko</h1>
+      <h1><i class="fa fa-tasks"></i> Stok Toko</h1>
       {{-- <p>Start a beautiful journey here</p> --}}
     </div>
     <ul class="app-breadcrumb breadcrumb">
