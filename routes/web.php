@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('Send','ProductsController@send');
 		Route::post('Stok/save','ProductsController@store2'); // kirim ke toko
 		Route::get('/store','ProductsController@toko');
+		Route::get('/store/print/{id}','ProductsController@print');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');

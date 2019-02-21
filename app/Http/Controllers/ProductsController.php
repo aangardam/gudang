@@ -13,6 +13,7 @@ use Alert;
 use App\Models\Vendors;
 use App\Models\Store;
 use App\Models\ProductStore;
+use Excel;
 class ProductsController extends Controller
 {
     /**
@@ -130,16 +131,29 @@ class ProductsController extends Controller
             'total' => $produk->total - $stok
         ));
         for ($x=0; $x < $request->input('quantity') ; $x++) { 
+            // $qty = ProductsDetail::select('qty')
+            //                             ->where('size',$request->input('size')[$x])
+            //                             ->where('id_productsr',$request->input('produk'))
+            //                             ->first();
             $qty = ProductsDetail::select('qty')
-                                        ->where('id_products',$request->input('produk'))
-                                        ->where('size',$request->input('size')[$x])
-                                        ->first();
-            // return $qty;;
-            ProductsDetail::where('id_products',$request->input('produk'))
-                         ->where('size',$request->input('size')[$x])
-                         ->update(array(
-                            'qty' => $qty->qty - $request->input('qty')[$x]
-                         ));
+                                ->where([
+                                    'size' => $request->input('size')[$x],
+                                    'id_products'=>$request->input('produk')
+                                ])
+                                ->first();
+            // return $qty;
+            // ProductsDetail::where('id_products',$request->input('produk'))
+            //              ->where('size',$request->input('size')[$x])
+                        //  ->update(array(
+                        //     'qty' => $qty->qty - $request->input('qty')[$x]
+                        //  ));
+            ProductsDetail::where([
+                                'id_products'   => $request->input('produk'),
+                                'size'          => $request->input('size')[$x]
+                            ])
+                            ->update(array(
+                                'qty' => $qty->qty - $request->input('qty')[$x]
+                             ));
         }
         Alert::success('Data berhasil ditambah', 'Selamat!');
         return redirect('/Produk/Send');
@@ -306,7 +320,27 @@ class ProductsController extends Controller
     }
 
     public function toko(){
-        $data = ProductStore::all();
+        $data = ProductStore::select('nosurat','store_id','status')
+                            ->groupBy('nosurat','store_id','status')
+                            ->get();
+        // $data = ProductStore::all();
         return view('admin.products.toko',compact('data'));
+    }
+    public function print($id){
+        // return $id;
+        $data = ProductStore::where('nosurat',$id)->get();
+        Excel::create('Surat_Jalan', function ($excel) use ($data) {
+            $excel
+                ->sheet('Surat_Jalan', function ($sheet) use ($data) {
+                    $sheet->setWidth(array(
+                        'C' => 25
+                    ));
+                    $sheet->loadView(
+                        'admin.products.print',
+                        compact('data')
+                    );
+                })
+                ->download('xlsx');
+        });
     }
 }
