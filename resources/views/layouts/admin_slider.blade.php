@@ -42,8 +42,14 @@
           <li><a class="app-menu__item" href=""><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Return</span></a></li>
       </ul>
     </li>
+    @elseif(Auth::user()->role_id == 4)
+    <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Produk</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+      <ul class="treeview-menu">
+          <li><a class="app-menu__item" href=""><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">In Progres</span></a></li>
+          <li><a class="app-menu__item" href=""><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Selesai</span></a></li>
+      </ul>
+    </li>
     @else
-    
     @endif
   </ul>
 </aside>
