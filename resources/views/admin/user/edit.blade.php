@@ -160,7 +160,7 @@
             swal({
               type: 'error',
               title: 'Error',
-              text: 'Password minimal 8 Karakter'
+              text: 'Password minimal 4 Karakter'
             });
             return false;
           }

@@ -20,8 +20,8 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 	Route::get('/', 'HomeController@index');
 	Route::get('/home', 'HomeController@index');
-	// Route::get('/profil', 'HomeController@profil');
-	// Route::post('profil/edit/{id}','HomeController@updateprofil');
+	Route::get('/profil', 'HomeController@profil');
+	Route::post('profil/edit/{id}','HomeController@updateprofil');
 	// Route::post('profil/update/{id}','HomeController@updateprofil2');
 	Route::resource('Kategori','CategoryController');
 	Route::post('Kategori/active/{id}','CategoryController@active');
