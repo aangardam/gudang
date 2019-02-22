@@ -57,5 +57,17 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
 	Route::get('/ajax/getSum/{id}','ProductsController@getSum');
+
+	// area kepala toko
+	Route::group(['middleware'=>['role:Kepala Toko']],function(){
+		Route::group(['prefix' => 'Produk'], function () {
+			Route::get('/pending', 'ProductStoreController@index');
+			Route::get('/pending/detail/{id}', 'ProductStoreController@show');
+			Route::put('pending/save','ProductStoreController@update');
+
+			Route::get('/approve', 'ProductStoreController@index2');
+		});
+		
+	});
 });
 

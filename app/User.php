@@ -33,4 +33,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Role');
     }
 
+    public function produk()
+    {
+        return $this->hasManyThrough('App\Models\ProductStore', 'App\User');
+    }
+
 }
