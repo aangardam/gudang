@@ -10,6 +10,9 @@ use App\Repositories\Repository;
 use App\Repositories\Category\CategoryRepository;
 use Alert;
 use App\User;
+use App\Models\Products;
+use App\Models\ProductsDetail;
+use Auth;
 class VendorsController extends Controller
 {
     /**
@@ -60,6 +63,7 @@ class VendorsController extends Controller
             'password'  => bcrypt(1234),
             'role_id'   => 4
         ]);
+        $user->attachRole(4);
         $data['iduser'] = $user->id;
         $this->vendorRepo->create($data);
         Alert::success('Data berhasil ditambah', 'Selamat!');
@@ -143,5 +147,41 @@ class VendorsController extends Controller
         ));
         Alert::success('Data berhasil diubah', 'Selamat!');
         return redirect('/Vendors');
+    }
+
+    public function inprogres(){
+        $user = Auth::user()->id;
+        $vendor = Vendors::where('iduser',$user)->first();
+        // return $vendor;
+        $data = Products::where('status','PO')
+                            ->where('vendor_id',$vendor->id)
+                            ->get();
+        return view('Vendors.index')
+                ->with([
+                    'products' => $data
+                ]);
+    }
+    public function detail($id){
+        // return $id;
+        $produk = Products::find($id);
+        $data = ProductsDetail::where('id_products',$id)->get();
+        return view('Vendors.detail')
+                ->with([
+                    'detail' => $data,
+                    'produk' => $produk
+                ]);
+    }
+
+    public function finished(){
+        $user = Auth::user()->id;
+        $vendor = Vendors::where('iduser',$user)->first();
+        // return $vendor;
+        $data = Products::where('status','GUDANG')
+                            ->where('vendor_id',$vendor->id)
+                            ->get();
+        return view('Vendors.index2')
+                ->with([
+                    'products' => $data
+                ]);
     }
 }

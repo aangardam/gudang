@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h5>Detail PO</h5>
+                <h5>Detail</h5>
                 <hr>
                 <form class="forms-sample" action="{{ url('Produk/Stok/save') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}

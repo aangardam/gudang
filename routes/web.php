@@ -70,13 +70,15 @@ Route::group(['middleware' => ['auth']], function () {
 		
 	});
 
-	Route::group(['middleware'=>['role:Vendors']],function(){
+	Route::group(['middleware'=>['role:Vendor']],function(){
 		Route::group(['prefix' => 'Produk'], function () {
-			Route::get('/pending', 'ProductStoreController@index');
-			Route::get('/pending/detail/{id}', 'ProductStoreController@show');
-			Route::put('pending/save','ProductStoreController@update');
+			Route::get('/inprogres', 'VendorsController@inprogres');
+			Route::get('/finished', 'VendorsController@finished');
+			Route::get('/detail/{id}/view', 'VendorsController@detail');
+			// Route::get('/pending/detail/{id}', 'ProductStoreController@show');
+			// Route::put('pending/save','ProductStoreController@update');
 
-			Route::get('/approve', 'ProductStoreController@index2');
+			// Route::get('/approve', 'ProductStoreController@index2');
 		});
 		
 	});
