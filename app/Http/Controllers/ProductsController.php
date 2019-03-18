@@ -343,4 +343,61 @@ class ProductsController extends Controller
                 ->download('xlsx');
         });
     }
+
+    public function return(){
+        $nosurat = ProductStore::all()->count();
+
+        $nourut = $nosurat == 0 ? 1 : $nosurat+1;
+        // return $nourut;
+        $tgl = date('Ym');
+        $nosurat = $tgl.sprintf("%04s", $nourut);
+        // return $nosurat;
+        $store = Store::where('status',1)->get();
+        $produk = Products::where('status','GUDANG')
+                        ->where('total','>=',1)
+                        ->get();
+        return view('admin.products.return')->with([
+            'store'     => $store,
+            'produk'    => $produk,
+            'nosurat'   => $nosurat
+        ]);
+    }
+
+    public function return_product(Request $request){
+        $stok = 0;
+        for ($i=0; $i < $request->input('quantity') ; $i++) { 
+            $stok = $stok + $request->input('qty')[$i];
+        }
+        
+        // $produk = Products::select('total')
+        //                         ->where('id',$request->input('produk'))
+        //                         ->first();
+        // Products::where('id',$request->input('produk'))->update(array(
+        //     'total' => $produk->total + $stok
+        // ));
+        for ($x=0; $x < $request->input('quantity') ; $x++) { 
+            $produk = Products::select('total')
+                        ->where('id',$request->input('produk')[$x])
+                        ->first();
+            Products::where('id',$request->input('produk')[$x])->update(array(
+                            'total' => $produk->total + $stok
+                            ));
+
+            $qty = ProductsDetail::select('qty')
+                                ->where([
+                                    'size' => $request->input('size')[$x],
+                                    'id_products'=>$request->input('produk')
+                                ])
+                                ->first();
+            ProductsDetail::where([
+                                'id_products'   => $request->input('produk')[$x],
+                                'size'          => $request->input('size')[$x]
+                            ])
+                            ->update(array(
+                                'qty' => $qty->qty + $request->input('qty')[$x]
+                             ));
+        }
+        Alert::success('Data berhasil ditambah', 'Selamat!');
+        return redirect('/Produk/Send');
+    }
 }

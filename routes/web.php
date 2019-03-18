@@ -53,6 +53,10 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::post('Stok/save','ProductsController@store2'); // kirim ke toko
 		Route::get('/store','ProductsController@toko');
 		Route::get('/store/print/{id}','ProductsController@print');
+
+		// return
+		Route::get('/return','ProductsController@return');
+		Route::post('/return_product','ProductsController@return_product'); // kirim ke toko
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
