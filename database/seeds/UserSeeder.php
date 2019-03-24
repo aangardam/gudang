@@ -15,16 +15,16 @@ class UserSeeder extends Seeder
     {
         $roles = [
             [
-                'name' => 'Admin',
-                'display_name' => 'Administator',
+                'name' => 'Staff Gudang',
+                'display_name' => 'Staff Gudang',
             ],
             [
                 'name' => 'Kepala Toko',
                 'display_name' => 'Kepala Toko',
             ],
             [
-                'name' => 'Staff Gudang',
-                'display_name' => 'Staff Gudang',
+                'name' => 'Kepala Gudang',
+                'display_name' => 'Kepala Gudang',
             ],
             [
                 'name' => 'Vendor',
@@ -36,17 +36,23 @@ class UserSeeder extends Seeder
         }
         $user = [
             [
-                'name' => 'admin',
-                'email' => 'admin@local.local',
+                'name' => 'Staff Gudang',
+                'email' => 'staf_gudang@sixpax.com',
                 'password' => bcrypt('123'),
                 'role_id' => 1
             ],
             [
-                'name' => 'toko',
-                'email' => 'toko@local.local',
+                'name' => 'Kepala Toko',
+                'email' => 'kepala_toko@sixpax.com',
                 'password' => bcrypt('123'),
                 'role_id' => 2
             ],
+            [
+                'name' => 'Kepala Gudang',
+                'email' => 'kepala_gudang@sixpax.com',
+                'password' => bcrypt('123'),
+                'role_id' => 3
+            ]
         ];
         $n =1;
         foreach ($user as $key => $value) {

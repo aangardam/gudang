@@ -19,9 +19,12 @@
     <div class="col-md-12">
       <div class="tile">
         <div align="right">
-             <a href="{{ url ('Produk/Send/') }}" class="btn btn-primary btn-sm">
-                <b><i class="fa fa-send"></i></b> Kirim
+          @if (!Auth::user()->hasRole('Kepala Toko'))
+            <a href="{{ url ('Produk/Send/') }}" class="btn btn-primary btn-sm">
+              <b><i class="fa fa-send"></i></b> Kirim
             </a> 
+          @endif
+             
         </div>
         <hr>
         <table class="table table-hover table-striped" id="sampleTable">

@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use Alert;
 use App\Models\Vendors;
+use App\Models\Rainkarp;
 class HomeController extends Controller
 {
     /**
@@ -75,5 +76,45 @@ class HomeController extends Controller
         return redirect('profil')->with('success', 'Data profil berhasil di ubah'); 
     } 
 
-    
+    public function test(){
+
+        // return "halaman test";
+        return view('test.rabinkarp');
+    }
+
+    public function cek(Request $request){
+       $data = $request->input('isi');
+       // $jumlah = strlen($request->input('nama'));
+       // return $data;
+       $cek = Rainkarp::where('isi', 'like', '%' . $data . '%')->count();
+       // return $cek;
+       if ($cek == 0) {
+           $save = Rainkarp::create([
+                            'nama' => $request->input('nama'),
+                            'isi' => $data
+                        ]);
+           return redirect('test');
+       }else{
+            $cek2 = Rainkarp::where('isi', 'like', '%' . $data . '%')->get();
+            $jumlah1 = strlen($data);
+            $jum = 0;
+            $content = [];
+            for ($i=0; $i < $cek ; $i++) { 
+                $jumlah2 = strlen($cek2[$i]->isi);
+                if ($jumlah1 >= $jumlah2 ) {
+                    $jum = $jumlah2;
+                }else{
+                    $jum = $jumlah1;
+                }
+                $rabinkarp = new Rainkarp();
+                $hasil = $rabinkarp->rabinkarp( "'" . $data . "'" ,"'" . $cek2[$i]->isi . "'" , $jum);   
+            }
+
+       }
+
+       // for ($i=0; $i < 4 ; $i++) { 
+       //    echo $rabinkarp->rabinkarp( "'" . $data . "'" ,"testing", $jumlah)."<br>";
+       // }
+        
+    }
 }

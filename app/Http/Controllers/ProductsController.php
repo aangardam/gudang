@@ -14,6 +14,8 @@ use App\Models\Vendors;
 use App\Models\Store;
 use App\Models\ProductStore;
 use Excel;
+use App\Models\product_return;
+use Auth;
 class ProductsController extends Controller
 {
     /**
@@ -37,7 +39,7 @@ class ProductsController extends Controller
     }
     public function gudang()
     {
-        // return "Halaman PO";
+        // return "Halaman Gudang";
         $products = $this->products->stokgudang();
         return view('admin.products.gudang')
                 ->with([
@@ -103,14 +105,14 @@ class ProductsController extends Controller
         return redirect('/Produk/PO/create');
 
     }
-    public function store2(Request $request) //masuk ke gudang
+    public function store2(Request $request) //masuk ke toko
     {
-        // return $request->all();
+
         $stok = 0;
-        for ($i=0; $i < $request->input('quantity') ; $i++) { 
-            $stok = $stok + $request->input('qty')[$i];
-        }
-        // save to produk store
+        // for ($i=0; $i < $request->input('quantity') ; $i++) { 
+        //     $stok = $stok + $request->input('qty')[$i];
+        // }
+
         for ($j=0; $j < $request->input('quantity') ; $j++) { 
             $data['store_id']   = $request->input('store_id');
             $data['product_id'] = $request->input('produk')[$j];
@@ -120,39 +122,29 @@ class ProductsController extends Controller
             $data['nosurat']    = $request->input('nosurat');
 
             ProductStore::create($data);
+
+            $produk = Products::select('total')
+                        ->where('id',$request->input('produk')[$j])
+                        ->first();
+            Products::where('id',$request->input('produk')[$j])->update(array(
+                        'total' => $produk->total - $request->input('qty')[$j]
+            ));
         }
         
-        // update produk and produk detail
-        $produk = Products::select('total')
-                                ->where('id',$request->input('produk'))
-                                ->first();
-        // return $produk->total;
-        Products::where('id',$request->input('produk'))->update(array(
-            'total' => $produk->total - $stok
-        ));
         for ($x=0; $x < $request->input('quantity') ; $x++) { 
-            // $qty = ProductsDetail::select('qty')
-            //                             ->where('size',$request->input('size')[$x])
-            //                             ->where('id_productsr',$request->input('produk'))
-            //                             ->first();
-            $qty = ProductsDetail::select('qty')
+
+            $jum = ProductsDetail::select('qty')
                                 ->where([
                                     'size' => $request->input('size')[$x],
-                                    'id_products'=>$request->input('produk')
+                                    'id_products'=>$request->input('produk')[$x]
                                 ])
                                 ->first();
-            // return $qty;
-            // ProductsDetail::where('id_products',$request->input('produk'))
-            //              ->where('size',$request->input('size')[$x])
-                        //  ->update(array(
-                        //     'qty' => $qty->qty - $request->input('qty')[$x]
-                        //  ));
             ProductsDetail::where([
-                                'id_products'   => $request->input('produk'),
+                                'id_products'   => $request->input('produk')[$x],
                                 'size'          => $request->input('size')[$x]
                             ])
                             ->update(array(
-                                'qty' => $qty->qty - $request->input('qty')[$x]
+                                'qty' => $jum->qty - $request->input('qty')[$x]
                              ));
         }
         Alert::success('Data berhasil ditambah', 'Selamat!');
@@ -280,6 +272,21 @@ class ProductsController extends Controller
         return $sum;
     }
 
+    // detail return
+    public function getSize2($id){
+        $size = ProductStore::where('product_id',$id)->get();
+        return $size;
+    }
+    public function getSum2($id){
+        $exp = explode('-', $id);
+        $id = $exp[0];
+        $size = $exp[1];
+        $sum = ProductStore::where('product_id',$id)
+                            ->where('size',$size)
+                            ->get();
+        return $sum;
+    }
+
     public function approve(Request $request){
         // return $request->all();
         $param = $request->input('id_detail');
@@ -345,16 +352,20 @@ class ProductsController extends Controller
     }
 
     public function return(){
-        $nosurat = ProductStore::all()->count();
-
+        $nosurat = product_return::all()->count();
         $nourut = $nosurat == 0 ? 1 : $nosurat+1;
-        // return $nourut;
         $tgl = date('Ym');
         $nosurat = $tgl.sprintf("%04s", $nourut);
         // return $nosurat;
-        $store = Store::where('status',1)->get();
-        $produk = Products::where('status','GUDANG')
-                        ->where('total','>=',1)
+
+        $user = Auth::user()->id;
+        $store = Store::where('user_id',$user)->first();
+        // return $store;
+        $produk = ProductStore::select('product_id')
+                        ->where('status','Approve')
+                        ->where('qty','>=',1)
+                        ->where('store_id',$store->id)
+                        ->groupBy('product_id')
                         ->get();
         return view('admin.products.return')->with([
             'store'     => $store,
@@ -364,40 +375,9 @@ class ProductsController extends Controller
     }
 
     public function return_product(Request $request){
-        $stok = 0;
-        for ($i=0; $i < $request->input('quantity') ; $i++) { 
-            $stok = $stok + $request->input('qty')[$i];
-        }
-        
-        // $produk = Products::select('total')
-        //                         ->where('id',$request->input('produk'))
-        //                         ->first();
-        // Products::where('id',$request->input('produk'))->update(array(
-        //     'total' => $produk->total + $stok
-        // ));
-        for ($x=0; $x < $request->input('quantity') ; $x++) { 
-            $produk = Products::select('total')
-                        ->where('id',$request->input('produk')[$x])
-                        ->first();
-            Products::where('id',$request->input('produk')[$x])->update(array(
-                            'total' => $produk->total + $stok
-                            ));
-
-            $qty = ProductsDetail::select('qty')
-                                ->where([
-                                    'size' => $request->input('size')[$x],
-                                    'id_products'=>$request->input('produk')
-                                ])
-                                ->first();
-            ProductsDetail::where([
-                                'id_products'   => $request->input('produk')[$x],
-                                'size'          => $request->input('size')[$x]
-                            ])
-                            ->update(array(
-                                'qty' => $qty->qty + $request->input('qty')[$x]
-                             ));
-        }
-        Alert::success('Data berhasil ditambah', 'Selamat!');
+       
+        Alert::success('Data berhasil dikembalikan', 'Selamat!');
         return redirect('/Produk/Send');
     }
+
 }

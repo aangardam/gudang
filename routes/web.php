@@ -57,10 +57,16 @@ Route::group(['middleware' => ['auth']], function () {
 		// return
 		Route::get('/return','ProductsController@return');
 		Route::post('/return_product','ProductsController@return_product'); // kirim ke toko
+
+		//back pusat
+		Route::get('/productreturn','ProductReturnController@index');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
 	Route::get('/ajax/getSum/{id}','ProductsController@getSum');
+
+	Route::get('/ajax/getSize2/{id}','ProductsController@getSize2');
+	Route::get('/ajax/getSum2/{id}','ProductsController@getSum2');
 
 	// area kepala toko
 	Route::group(['middleware'=>['role:Kepala Toko']],function(){
@@ -86,5 +92,9 @@ Route::group(['middleware' => ['auth']], function () {
 		});
 		
 	});
+
+
+	Route::get('test','HomeController@test');
+	Route::post('test/rabinkarp','HomeController@cek');
 });
 

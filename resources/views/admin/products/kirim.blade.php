@@ -21,7 +21,7 @@
                 <hr>
                 <form class="forms-sample" action="{{ url('Produk/Stok/save') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <input type="hidden" class="form-control" name="id_product" required="" placeholder="Kode" />
+                    {{-- <input type="hidden" class="form-control" name="id_product" required="" placeholder="Kode" /> --}}
                     <div class="form-group">
                         <div class="row">
                             <label for="name" class="col-md-2">Surat Jalan <span class="text-danger">*</span></label>

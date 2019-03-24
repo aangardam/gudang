@@ -31,7 +31,7 @@
                                 <select name="product_id" id="produk" class="form-control">
                                     <option value="" selected="" disabled=""> Pilih Produk</option>
                                     @foreach ($produk as $item)
-                                        <option value="{{ $item->id }}-{{ $item->name }}"> {{ $item->name }}</option>
+                                        <option value="{{ $item->product_id }}"> {{ $item->produk->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -87,42 +87,11 @@
 @endsection
 @section('script')
 <script>
-    function tambah_produk(){
-        var size = $("#size_id").val();
-        var qty = $('#qty').val();
-        var produk = $('#produk').val().split("-");
-
-        if(size == ''|| qty == '' ){
-            alert("Data tidak boleh kosong ");
-        }else{
-            var no = Number($("#no").val())+1;
-            $('#no').val(no);
-            $("#detail").append(
-                "<tr id='no"+no+"'>"+
-                    "<td>"+produk[1]+"</td>"+
-                    "<td>"+size+"</td>"+
-                    "<td>"+qty+"</td>"+
-                    "<td><button type='button' class='btn btn-danger btn-xs' onclick='fungsihapus("+no+")'>Hapus</button></td>"+
-
-                    "<input type='hidden'  name='size[]' value='"+size+"'>"+ 
-                    "<input type='hidden'  name='qty[]' value='"+qty+"'>"+ 
-                    "<input type='hidden'  name='produk[]' value='"+produk[0]+"'>"+ 
-                    "<input type='hidden'  name='quantity' value='"+no+"'>"+ 
-
-                "</tr>"
-            )
-        }
-    }
-    function fungsihapus(id){
-        console.log(id)
-        $("#no"+id+"").remove();
-    }
-</script>
-<script>
     $('#produk').on('change',function(){
-        var product_id = $(this).val().split("-");
+        var product_id = $(this).val();
+        {{-- alert(product_id) --}}
         $.ajax({
-            url:'/ajax/getSize/'+product_id[0],
+            url:'/ajax/getSize2/'+product_id,
             success:function(response){
                 $("#size_id").html(response);
                 $("#size_id").append("<option value=''> Pilih Ukuran </option>");
@@ -132,16 +101,16 @@
             }
         })
     });
-    {{-- $('#size_id').on('change',function(){
+    $('#size_id').on('change',function(){
         var size = $(this).val();
-        var product_id = $('#produk').val().split("-");
+        var product_id = $('#produk').val();
         $.ajax({
-            url:'/ajax/getSum/'+product_id[0]+'-'+size,
+            url:'/ajax/getSum2/'+product_id+'-'+size,
             success:function(response){
                 document.getElementById("qty").value=response[0].qty;
             }
         })
         
-    }); --}}
+    });
 </script>
 @endsection
