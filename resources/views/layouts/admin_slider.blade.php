@@ -19,7 +19,7 @@
         <ul class="treeview-menu">
             <li><a class="app-menu__item" href="{{ url('Produk/Stok')}}"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Stok Gudang</span></a></li>
             <li><a class="app-menu__item" href="{{ url('Produk/store')}}"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Stok Toko</span></a></li>
-            <li><a class="app-menu__item" href="{{ url('Produk/return')}}"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Return</span></a></li>
+            <li><a class="app-menu__item" href="{{ url('Produk/kembali')}}"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">Return</span></a></li>
         </ul>
       </li>
     @elseif (Auth::user()->hasRole('Kepala Gudang'))

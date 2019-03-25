@@ -9,6 +9,9 @@ use Auth;
 use App\User;
 use Alert;
 use App\Models\product_return;
+use App\Models\Products;
+use App\Models\ProductsDetail;
+
 class ProductReturnController extends Controller
 {
     /**
@@ -25,6 +28,13 @@ class ProductReturnController extends Controller
         return view('admin.produk_return.index');
     }
 
+    public function index2(){
+        $data = product_return::select('store_id','status','nosurat')
+                            ->where('status', 'Pending')
+                            ->groupBy('store_id','status','nosurat')
+                            ->get();
+        return view('admin.produk_return.index2',compact('data'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -54,7 +64,10 @@ class ProductReturnController extends Controller
      */
     public function show($id)
     {
-        //
+        // return $id;
+        $data = product_return::where('nosurat',$id)->get();
+        // return
+        return view('admin.produk_return.show',compact('data'));
     }
 
     /**
@@ -75,9 +88,41 @@ class ProductReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // return $request->all();
+        $id = $request->input('id');
+        foreach($id as $key=>$value ){
+            // ubah status produk return
+            product_return::where('id',$value)->update(array(
+                'status' => 'Approve'
+            ));
+
+            // ubah jumlah produk
+            $produk = Products::select('total')
+                ->where('id',$request->input('produk')[$key])
+                ->first();
+            Products::where('id',$request->input('produk')[$key])->update(array(
+                'total' => $produk->total + $request->input('qty')[$key],
+            ));
+
+            // ubah detail
+            $jum = ProductsDetail::select('qty')
+                ->where([
+                    'size' => $request->input('size')[$key],
+                    'id_products' => $request->input('produk')[$key],
+                ])
+                ->first();
+            ProductsDetail::where([
+                'id_products' => $request->input('produk')[$key],
+                'size' => $request->input('size')[$key],
+            ])
+                ->update(array(
+                    'qty' => $jum->qty + $request->input('qty')[$key],
+                ));
+            }
+        Alert::success('Data berhasil ditambah', 'Selamat!');
+        return redirect('/Produk/kembali');
     }
 
     /**

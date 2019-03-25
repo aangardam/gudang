@@ -60,6 +60,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 		//back pusat
 		Route::get('/productreturn','ProductReturnController@index');
+
+		// cek data return di pusat
+		Route::get('/kembali','ProductReturnController@index2');
+		Route::get('/detail2/{id}','ProductReturnController@show');
+		Route::put('/return/save','ProductReturnController@update');
 	});
 	Route::get('/ajax/getVendor/{id}','ProductsController@getVendor');
 	Route::get('/ajax/getSize/{id}','ProductsController@getSize');
