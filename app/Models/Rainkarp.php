@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rainkarp extends Model
 {
-	protected $fillable = ['nama','isi'];
+    protected $fillable = ['nama', 'isi'];
 
-     function rabinkarp($teks1, $teks2, $gram) {
+    public function rabinkarp($teks1, $teks2, $gram)
+    {
         $data['teks1White'] = $this->whiteInsensitive($teks1);
         $data['teks2White'] = $this->whiteInsensitive($teks2);
         $data['teks1Gram'] = $this->kGram($data['teks1White'], $gram);
@@ -20,24 +21,27 @@ class Rainkarp extends Model
         return $data['similiarity'];
     }
 
-    function whiteInsensitive($teks) {
-        
+    public function whiteInsensitive($teks)
+    {
+
         $a = $teks;
         $b = preg_replace("/[^a-z0-9_\-\.]/i", "-", $a);
         $c = explode("-", $b); //misah string berdasarkan -
         $e = '';
         $f = '';
         for ($d = 0; $d < count($c); $d++) {
-            if (trim($c[$d]) != "")
+            if (trim($c[$d]) != "") {
                 $e .= $c[$d] . " ";
+            }
+
         }
         $e = strtolower(substr($e, 0, strlen($e) - 1));
         $f = str_replace(array(".", "_"), "", $e);
         return $f;
     }
 
-    
-    function kGram($teks, $gram=3) {
+    public function kGram($teks, $gram = 3)
+    {
         $i = 0;
         $length = strlen($teks);
         $teksSplit;
@@ -51,8 +55,8 @@ class Rainkarp extends Model
         return $teksSplit;
     }
 
-    
-    function hash($gram) {
+    public function hash($gram)
+    {
         $hashGram = null;
         foreach ($gram as $a => $teks) {
             if ($this->cekHash($teks, $hashGram) != true) {
@@ -62,8 +66,8 @@ class Rainkarp extends Model
         return $hashGram;
     }
 
-    
-    function rollingHash($string) {
+    public function rollingHash($string)
+    {
         $basis = 11;
         $pjgKarakter = strlen($string);
         $hash = 0;
@@ -74,8 +78,8 @@ class Rainkarp extends Model
         return $hash;
     }
 
-    
-    function fingerprint($hash1, $hash2) {
+    public function fingerprint($hash1, $hash2)
+    {
         $fingerprint = null;
         $hashUdahDicek = null;
         $sama = false;
@@ -98,8 +102,8 @@ class Rainkarp extends Model
         return $fingerprint;
     }
 
-   
-    function cekHash($hash, $hashUdahDicek) {
+    public function cekHash($hash, $hashUdahDicek)
+    {
         $value = false;
         @$countHashUdahDicek = count($hashUdahDicek);
         if ($countHashUdahDicek > 0) {
@@ -113,8 +117,8 @@ class Rainkarp extends Model
         return $value;
     }
 
-   
-    function similarityCoefficient($fingerprint, $hash1, $hash2) {
+    public function similarityCoefficient($fingerprint, $hash1, $hash2)
+    {
         return number_format(((2 * count($fingerprint) / (count($hash1) + count($hash2))) * 100), 2, '.', '');
     }
 

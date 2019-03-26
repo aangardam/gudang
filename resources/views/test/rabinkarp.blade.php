@@ -30,7 +30,8 @@
                         <div class="row">
                             <label for="email" class="col-md-2">Isi  <span class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="isi" />
+                                {{--  <input type="text" class="form-control" name="isi" />  --}}
+                                <textarea name="isi" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

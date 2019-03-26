@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
-use App\User;
 use Alert;
-use App\Models\Vendors;
 use App\Models\Rainkarp;
+use App\Models\Vendors;
+use App\User;
+use Auth;
+use Illuminate\Http\Request;
+
 class HomeController extends Controller
 {
     /**
@@ -36,12 +37,12 @@ class HomeController extends Controller
         // return $user;
         if ($user->role_id == 4) {
             $status = 'Vendors';
-        }else{
+        } else {
             $status = 'Karyawan';
         }
-        
-        $vendors = Vendors::where('iduser',$user->id)->first();
-        return view('admin.profil',compact('vendors','user','status'));
+
+        $vendors = Vendors::where('iduser', $user->id)->first();
+        return view('admin.profil', compact('vendors', 'user', 'status'));
     }
 
     public function updateprofil(Request $request)
@@ -49,11 +50,11 @@ class HomeController extends Controller
         $id = $request->id;
         $status = $request->input('status');
         if ($status == 'Vendors') {
-            $data = Vendors::where('iduser',$id)->update(array(
+            $data = Vendors::where('iduser', $id)->update(array(
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'address' => $request->input('address'),
-                'notelp' => $request->input('notelp')
+                'notelp' => $request->input('notelp'),
             ));
         }
         // $user = User::where('id',$request->user_id)->update(array(
@@ -61,60 +62,78 @@ class HomeController extends Controller
         //     'email'=>$request->email
         // ));
         if ($request->input('password') != '') {
-            $update = User::where('id',$id)->update(array(
-                 'name' => $request->input('name'),
-                 'email' => $request->input('email'),
-                 'password' => bcrypt($request->input('password'))
-             ));
-         }else{
-             $update = User::where('id',$id)->update(array(
-                 'name' => $request->input('name'),
-                 'email' => $request->input('email')
-             ));
-         }
+            $update = User::where('id', $id)->update(array(
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+            ));
+        } else {
+            $update = User::where('id', $id)->update(array(
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+            ));
+        }
         Alert::success('Data Profil berhasil di ubah');
-        return redirect('profil')->with('success', 'Data profil berhasil di ubah'); 
-    } 
+        return redirect('profil')->with('success', 'Data profil berhasil di ubah');
+    }
 
-    public function test(){
+    public function test()
+    {
 
         // return "halaman test";
         return view('test.rabinkarp');
     }
 
-    public function cek(Request $request){
-       $data = $request->input('isi');
-       // $jumlah = strlen($request->input('nama'));
-       // return $data;
-       $cek = Rainkarp::where('isi', 'like', '%' . $data . '%')->count();
-       // return $cek;
-       if ($cek == 0) {
-           $save = Rainkarp::create([
-                            'nama' => $request->input('nama'),
-                            'isi' => $data
-                        ]);
-           return redirect('test');
-       }else{
-            $cek2 = Rainkarp::where('isi', 'like', '%' . $data . '%')->get();
-            $jumlah1 = strlen($data);
-            $jum = 0;
-            $content = [];
-            for ($i=0; $i < $cek ; $i++) { 
-                $jumlah2 = strlen($cek2[$i]->isi);
-                if ($jumlah1 >= $jumlah2 ) {
-                    $jum = $jumlah2;
-                }else{
-                    $jum = $jumlah1;
+    public function cek(Request $request)
+    {
+        $cek = Rainkarp::count();
+        $data = $request->input('isi');
+
+        if ($cek == 0) {
+            $save = Rainkarp::create([
+                'nama' => $request->input('nama'),
+                'isi' => $data,
+            ]);
+            Alert::success('Data berhasil di di tambah');
+            return redirect('test');
+        } else {
+            $items = array();
+            for ($i = 0; $i < $cek; $i++) {
+                $data1 = Rainkarp::select('isi')->get();
+                similar_text($data, $data1[$i]->isi, $persen);
+                $pembanding = $persen;
+                if ($pembanding > 25) {
+                    if (strlen($data) > strlen($data1[$i]->isi)) {
+                        $jum = strlen($data1[$i]->isi);
+                    } else {
+                        $jum = strlen($data);
+                    }
+                    $rabinkarp = new Rainkarp();
+                    $items[] = $rabinkarp->rabinkarp("'" . $data1[$i]->isi . "'", "'" . $data . "'", $jum - 1);
                 }
-                $rabinkarp = new Rainkarp();
-                $hasil = $rabinkarp->rabinkarp( "'" . $data . "'" ,"'" . $cek2[$i]->isi . "'" , $jum);   
             }
-
-       }
-
-       // for ($i=0; $i < 4 ; $i++) { 
-       //    echo $rabinkarp->rabinkarp( "'" . $data . "'" ,"testing", $jumlah)."<br>";
-       // }
-        
+            if ($items == []) {
+                $save = Rainkarp::create([
+                    'nama' => $request->input('nama'),
+                    'isi' => $data,
+                ]);
+                Alert::success('Data berhasil di di tambah');
+                return redirect('test');
+            } else {
+                $nilai = max($items);
+                // return $nilai;
+                if ($nilai < 50) {
+                    $save = Rainkarp::create([
+                        'nama' => $request->input('nama'),
+                        'isi' => $data,
+                    ]);
+                    Alert::success('Data Profil berhasil di ubah');
+                    return redirect('test');
+                } else {
+                    Alert::error('Data telah ada');
+                    return redirect('test');
+                }
+            }
+        }
     }
 }
